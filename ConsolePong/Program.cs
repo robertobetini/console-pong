@@ -10,7 +10,7 @@ namespace ConsolePong
     {
         private const int BoardWidth = 50;
         private const int BoardHeight = 20;
-        private const short TickTime = 80;
+        private const short TickTime = 150;
         private static readonly MoveController _moveController = new MoveController(new Random());
         private static Game _game;
 
@@ -24,17 +24,18 @@ namespace ConsolePong
 
         private static void Update(object state)
         {
-            // Lock is needed to draw the game correctly
+            // Lock is needed to draw the game properly.
             lock (_game.boardView)
             {
-                _moveController.MoveComputerPaddle(_game.computerPaddle, _game.ball, _game.board, Difficulty.Easy);
+                _moveController.MoveComputerPaddle(_game.computerPaddle, _game.ball, _game.board, _game.Difficulty);
                 _game.Update();
             }
         }
 
         static void Main(string[] args)
         {
-            // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction
+            // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction.
+
             // Initializing the game objects.
             var board = new Board(BoardWidth, BoardHeight);
             var humanPaddle = new Paddle(5, Player.Human);
@@ -54,6 +55,9 @@ namespace ConsolePong
             var ball = new Ball(ballVelocity, ballX, ballY);
             
             _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
+
+            // TODO: Ask the user for the difficulty.
+            _game.Difficulty = Difficulty.Medium;
 
             // Starting the game.
             Timer timer = new Timer(Update);
