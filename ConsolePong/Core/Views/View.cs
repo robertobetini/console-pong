@@ -5,8 +5,8 @@ namespace ConsolePong.Core.Views
 {
     public abstract class View : IView
     {
-        public static readonly int xOffset = 30;
-        public static readonly int yOffset = 5;
+        public static readonly int xOffset = 25;
+        public static readonly int yOffset = 7;
 
         virtual public void Display()
         {

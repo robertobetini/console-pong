@@ -12,7 +12,7 @@ namespace ConsolePong
     {
         private const int BoardWidth = 80;
         private const int BoardHeight = 30;
-        private const short TickTime = 150;
+        private const short TickTime = 50;
         private const int PaddleLength = 7;
 
         private static Thread movementThread;
@@ -73,14 +73,14 @@ namespace ConsolePong
             // Set Ball initial position and velocity
             var random = new Random();
             int ballX = board.Width / 2;
-            int ballY = 2 + random.Next() % (board.Height - 2);
-            var ballVelocity = new int[2] { 1, 1 };
+            int ballY = 1 + random.Next() % (board.Height - 3);
+            var ballVelocity = new int[2] { -1, 1 };
             var ball = new Ball(ballVelocity, ballX, ballY);
             
             _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
 
             // TODO: Ask the user for the difficulty.
-            _game.Difficulty = Difficulty.Medium;
+            _game.Difficulty = Difficulty.Random;
 
             // Starting the game.
             timer = new Timer(Update);

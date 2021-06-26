@@ -9,7 +9,7 @@ namespace ConsolePong.Core
     {
         public Difficulty Difficulty { get; set; }
 
-        public const int MaxScore = 1;
+        public const int MaxScore = 5;
 
         public Board board;
         public Ball ball;
@@ -39,6 +39,8 @@ namespace ConsolePong.Core
         public void Update()
         {
             CheckWinner();
+            
+            
 
             if (!_boardIsDisplayed)
             {
@@ -46,6 +48,8 @@ namespace ConsolePong.Core
                 ballView.Display();
                 humanPaddleView.Display();
                 computerPaddleView.Display();
+                ScoreView.Display(10, Score.Human, '#');
+                ScoreView.Display(board.Width - 14, Score.Computer, '#');
                 _boardIsDisplayed = true;
             }
 
@@ -55,9 +59,15 @@ namespace ConsolePong.Core
                 // testing purposes.
                 ball.ReflectVertically();
                 if (ball.GetPosition()[0] <= 1)
+                {
                     Score.Computer++;
+                    ScoreView.Display(board.Width - 14, Score.Computer, '#');
+                }
                 else
+                {
                     Score.Human++;
+                    ScoreView.Display(10, Score.Human, '#');
+                }
             }
             if (ball.CollidesWithHorizontalWall(board))
             {
