@@ -15,7 +15,7 @@ namespace ConsolePong.Core.Views
             _ballChar = ballChar;
         }
 
-        public void Display()
+        public override void Display()
         {
             var position = _ball.GetPosition();
             ApplyOffset(position[0], position[1]);
