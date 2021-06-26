@@ -43,10 +43,12 @@ namespace ConsolePong.Core.Model
             var currentPosition = paddle.GetPosition();
             int[] topNextPosition = new int[2];
             int[] bottomNextPosition = new int[2];
+
             for (int i = 0; i < direction.Length; i++)
             {
                 topNextPosition[i] = currentPosition[i] + direction[i];
             }
+
             bottomNextPosition[0] = topNextPosition[0];
             bottomNextPosition[1] = topNextPosition[1] + paddle.Length - 1;
 

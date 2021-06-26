@@ -11,10 +11,12 @@ namespace ConsolePong.Core.Views
     public class PaddleView : IView
     {
         private readonly Paddle _paddle;
+        private char _paddleChar;
 
-        public PaddleView(Paddle paddle)
+        public PaddleView(Paddle paddle, char paddleChar)
         {
             _paddle = paddle;
+            _paddleChar = paddleChar;
         }
 
         public void Display()
@@ -23,7 +25,17 @@ namespace ConsolePong.Core.Views
             for (int i = 0; i < _paddle.Length; i++)
             {
                 Console.SetCursorPosition(position[0], position[1] + i);
-                Console.Write('X');
+                Console.Write(_paddleChar);
+            }
+        }
+
+        public void Hide()
+        {
+            var oldPosition = _paddle.GetOldPosition();
+            for (int i = 0; i < _paddle.Length; i++)
+            {
+                Console.SetCursorPosition(oldPosition[0], oldPosition[1] + i);
+                Console.Write(' ');
             }
         }
     }

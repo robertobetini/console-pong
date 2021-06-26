@@ -17,26 +17,42 @@ namespace ConsolePong.Core
         public BoardView boardView;
         public PaddleView humanPaddleView;
         public PaddleView computerPaddleView;
+        private bool _boardIsDisplayed;
 
-        public Game(Board board_, Ball ball_, Paddle humanPaddle_, Paddle computerPaddle_)
+        public Game(Board board_, Ball ball_, Paddle humanPaddle_, Paddle computerPaddle_, char paddleChar)
         {
             board = board_;
             ball = ball_;
             humanPaddle = humanPaddle_;
             computerPaddle = computerPaddle_;
             boardView = new BoardView(board_);
-            humanPaddleView = new PaddleView(humanPaddle);
-            computerPaddleView = new PaddleView(computerPaddle);
+            humanPaddleView = new PaddleView(humanPaddle, paddleChar);
+            computerPaddleView = new PaddleView(computerPaddle, paddleChar);
         }
 
         public void Update()
         {
-            humanPaddle.Moved = false;
-            computerPaddle.Moved = false;
+            if (!_boardIsDisplayed)
+            {
+                boardView.Display();
+                humanPaddleView.Display();
+                computerPaddleView.Display();
+                _boardIsDisplayed = true;
+            }
 
-            boardView.Display();
-            humanPaddleView.Display();
-            computerPaddleView.Display();
+            if (humanPaddle.Moved)
+            {
+                humanPaddleView.Hide();
+                humanPaddleView.Display();
+                humanPaddle.Moved = false;
+            }
+
+            if (computerPaddle.Moved)
+            {
+                computerPaddleView.Hide();
+                computerPaddleView.Display();
+                computerPaddle.Moved = false;
+            }
         }
     }
 }

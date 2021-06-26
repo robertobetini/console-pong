@@ -10,7 +10,7 @@ namespace ConsolePong
     {
         private const int BoardHeight = 10;
         private const int BoardWidth = 10;
-        private const short TickTime = 650;
+        private const short TickTime = 100;
         private static readonly MoveController _moveController = new MoveController();
         private static Game _game;
 
@@ -24,7 +24,10 @@ namespace ConsolePong
 
         private static void Update(object state)
         {
-            _game.Update();
+            lock (_game.boardView)
+            {
+                _game.Update();
+            }
         }
 
         static void Main(string[] args)
@@ -38,8 +41,9 @@ namespace ConsolePong
             var computerInitialPosition = new int[2] { board.Width - 3, 0 };
             computerPaddle.Move(computerInitialPosition);
 
-            var ball = new Ball();
-            _game = new Game(board, ball, humanPaddle, computerPaddle);
+            var ballVelocity = new int[2] { 0, 0 };
+            var ball = new Ball(ballVelocity);
+            _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
 
             // Starting the game.
             Timer timer = new Timer(Update);
