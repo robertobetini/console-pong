@@ -8,10 +8,10 @@ namespace ConsolePong
 {
     class Program
     {
-        private const int BoardWidth = 20;
+        private const int BoardWidth = 50;
         private const int BoardHeight = 20;
         private const short TickTime = 80;
-        private static readonly MoveController _moveController = new MoveController();
+        private static readonly MoveController _moveController = new MoveController(new Random());
         private static Game _game;
 
         private static void HandleMovement()
@@ -27,6 +27,7 @@ namespace ConsolePong
             // Lock is needed to draw the game correctly
             lock (_game.boardView)
             {
+                _moveController.MoveComputerPaddle(_game.computerPaddle, _game.ball, _game.board, Difficulty.Easy);
                 _game.Update();
             }
         }
