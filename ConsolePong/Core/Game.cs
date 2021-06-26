@@ -39,13 +39,25 @@ namespace ConsolePong.Core
                 _boardIsDisplayed = true;
             }
 
+            if (ball.CollidesWithVerticalWall(board))
+            {
+                // TODO: When ball collides with vertical wall, it should increase player/computer score, but now it's reflecting just for
+                // testing purposes.
+                ball.ReflectVertically();
+            }
+            if (ball.CollidesWithHorizontalWall(board))
+            {
+                ball.ReflectHorizontally();
+            }
             if (board.BallCanMove(ball, ball.velocity))
             {
                 if (ball.CollidesWithPaddle(humanPaddle) || ball.CollidesWithPaddle(computerPaddle))
-                    ball.Reflect();
+                    ball.ReflectVertically();
 
                 ball.Move();
             }
+            
+            
 
             if (ball.Moved)
             {
@@ -54,7 +66,7 @@ namespace ConsolePong.Core
                 ball.Moved = false;
             }
 
-            if (true)
+            if (computerPaddle.Moved)
             {
                 computerPaddleView.Hide();
                 computerPaddleView.Display();

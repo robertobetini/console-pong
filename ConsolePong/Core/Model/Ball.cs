@@ -43,10 +43,32 @@
             return false;
         }
 
-        public void Reflect()
+        public bool CollidesWithHorizontalWall(Board board)
         {
-            for (int i = 0; i < velocity.Length; i++)
-                velocity[i] *= -1;
+            var nextPosition = NextPosition();
+            if (nextPosition[1] == 0 || nextPosition[1] == board.Height - 1)
+                return true;
+
+            return false;
+        }
+
+        public bool CollidesWithVerticalWall(Board board)
+        {
+            var nextPosition = NextPosition();
+            if (nextPosition[0] == 0 || nextPosition[0] == board.Width - 1)
+                return true;
+
+            return false;
+        }
+
+        public void ReflectHorizontally()
+        {
+            velocity[1] *= -1;
+        }
+
+        public void ReflectVertically()
+        {
+            velocity[0] *= -1;
         }
     }
 }

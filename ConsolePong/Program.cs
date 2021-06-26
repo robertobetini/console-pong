@@ -8,9 +8,9 @@ namespace ConsolePong
 {
     class Program
     {
-        private const int BoardWidth = 70;
+        private const int BoardWidth = 20;
         private const int BoardHeight = 20;
-        private const short TickTime = 100;
+        private const short TickTime = 80;
         private static readonly MoveController _moveController = new MoveController();
         private static Game _game;
 
@@ -33,20 +33,23 @@ namespace ConsolePong
 
         static void Main(string[] args)
         {
+            // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction
             // Initializing the game objects.
             var board = new Board(BoardWidth, BoardHeight);
-            var humanPaddle = new Paddle(3, Player.Human);
-            var computerPaddle = new Paddle(3, Player.Computer);
+            var humanPaddle = new Paddle(5, Player.Human);
+            var humanInitialPosition = new int[2] { 1, (int)BoardHeight / 2  };
+            humanPaddle.SetPosition(humanInitialPosition);
 
             // Set computer paddle initial position.
-            var computerInitialPosition = new int[2] { board.Width - 2, 1 };
+            var computerPaddle = new Paddle(5, Player.Computer);
+            var computerInitialPosition = new int[2] { board.Width - 2, (int)BoardHeight / 2 };
             computerPaddle.SetPosition(computerInitialPosition);
 
             // Set Ball initial position and velocity
             var random = new Random();
-            int ballX = 1 + random.Next() % board.Width;
-            int ballY = 1 + random.Next() % board.Height;
-            var ballVelocity = new int[2] { -1, 0 };
+            int ballX = 17; //2 + random.Next() % (board.Width - 2);
+            int ballY = 17; //2 + random.Next() % (board.Height - 2);
+            var ballVelocity = new int[2] { 1, 1 };
             var ball = new Ball(ballVelocity, ballX, ballY);
             
             _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');

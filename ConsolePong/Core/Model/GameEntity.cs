@@ -3,7 +3,7 @@ using System;
 
 namespace ConsolePong.Core.Model
 {
-    public class GameEntity : IGameEntity
+    public abstract class GameEntity : IGameEntity
     {
         protected int[] _position = new int[2] { 1, 1 };
         protected int[] _oldPosition = new int[2] { 1, 1 };

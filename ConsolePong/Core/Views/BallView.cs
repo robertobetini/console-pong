@@ -4,7 +4,7 @@ using System;
 
 namespace ConsolePong.Core.Views
 {
-    public class BallView : IView
+    public class BallView : View
     {
         private Ball _ball;
         private char _ballChar;
@@ -18,14 +18,14 @@ namespace ConsolePong.Core.Views
         public void Display()
         {
             var position = _ball.GetPosition();
-            Console.SetCursorPosition(position[0], position[1]);
+            ApplyOffset(position[0], position[1]);
             Console.Write(_ballChar);
         }
 
         public void Hide()
         {
             var oldPosition = _ball.GetOldPosition();
-            Console.SetCursorPosition(oldPosition[0], oldPosition[1]);
+            ApplyOffset(oldPosition[0], oldPosition[1]);
             Console.Write(' ');
         }
     }
