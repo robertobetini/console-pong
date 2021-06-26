@@ -77,7 +77,7 @@ namespace ConsolePong
             var ballVelocity = new int[2] { -1, 1 };
             var ball = new Ball(ballVelocity, ballX, ballY);
             
-            _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
+            _game = new Game(board, ball, humanPaddle, computerPaddle, random,  'X');
 
             // TODO: Ask the user for the difficulty.
             _game.Difficulty = Difficulty.Random;
