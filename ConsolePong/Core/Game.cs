@@ -1,10 +1,6 @@
 ﻿using ConsolePong.Core.Model;
 using ConsolePong.Core.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsolePong.Core
 {
@@ -15,6 +11,7 @@ namespace ConsolePong.Core
         public Paddle humanPaddle;
         public Paddle computerPaddle;
         public BoardView boardView;
+        public BallView ballView;
         public PaddleView humanPaddleView;
         public PaddleView computerPaddleView;
         private bool _boardIsDisplayed;
@@ -26,6 +23,7 @@ namespace ConsolePong.Core
             humanPaddle = humanPaddle_;
             computerPaddle = computerPaddle_;
             boardView = new BoardView(board_);
+            ballView = new BallView(ball, 'O');
             humanPaddleView = new PaddleView(humanPaddle, paddleChar);
             computerPaddleView = new PaddleView(computerPaddle, paddleChar);
         }
@@ -35,9 +33,44 @@ namespace ConsolePong.Core
             if (!_boardIsDisplayed)
             {
                 boardView.Display();
+                ballView.Display();
                 humanPaddleView.Display();
                 computerPaddleView.Display();
                 _boardIsDisplayed = true;
+            }
+
+            if (ball.CollidesWithVerticalWall(board))
+            {
+                // TODO: When ball collides with vertical wall, it should increase player/computer score, but now it's reflecting just for
+                // testing purposes.
+                ball.ReflectVertically();
+            }
+            if (ball.CollidesWithHorizontalWall(board))
+            {
+                ball.ReflectHorizontally();
+            }
+            if (board.BallCanMove(ball, ball.velocity))
+            {
+                if (ball.CollidesWithPaddle(humanPaddle) || ball.CollidesWithPaddle(computerPaddle))
+                    ball.ReflectVertically();
+
+                ball.Move();
+            }
+            
+            
+
+            if (ball.Moved)
+            {
+                ballView.Hide();
+                ballView.Display();
+                ball.Moved = false;
+            }
+
+            if (computerPaddle.Moved)
+            {
+                computerPaddleView.Hide();
+                computerPaddleView.Display();
+                computerPaddle.Moved = false;
             }
 
             if (humanPaddle.Moved)
@@ -47,12 +80,7 @@ namespace ConsolePong.Core
                 humanPaddle.Moved = false;
             }
 
-            if (computerPaddle.Moved)
-            {
-                computerPaddleView.Hide();
-                computerPaddleView.Display();
-                computerPaddle.Moved = false;
-            }
+            Console.SetCursorPosition(0, board.Height);
         }
     }
 }
