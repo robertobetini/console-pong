@@ -8,6 +8,9 @@ namespace ConsolePong.Core
     public class Game
     {
         public Difficulty Difficulty { get; set; }
+
+        public const int MaxScore = 1;
+
         public Board board;
         public Ball ball;
         public Paddle humanPaddle;
@@ -16,6 +19,9 @@ namespace ConsolePong.Core
         public BallView ballView;
         public PaddleView humanPaddleView;
         public PaddleView computerPaddleView;
+        public bool finished = false;
+        public Paddle winner;
+
         private bool _boardIsDisplayed;
 
         public Game(Board board_, Ball ball_, Paddle humanPaddle_, Paddle computerPaddle_, char paddleChar)
@@ -32,6 +38,8 @@ namespace ConsolePong.Core
 
         public void Update()
         {
+            CheckWinner();
+
             if (!_boardIsDisplayed)
             {
                 boardView.Display();
@@ -46,6 +54,10 @@ namespace ConsolePong.Core
                 // TODO: When ball collides with vertical wall, it should increase player/computer score, but now it's reflecting just for
                 // testing purposes.
                 ball.ReflectVertically();
+                if (ball.GetPosition()[0] <= 1)
+                    Score.Computer++;
+                else
+                    Score.Human++;
             }
             if (ball.CollidesWithHorizontalWall(board))
             {
@@ -82,7 +94,22 @@ namespace ConsolePong.Core
                 humanPaddle.Moved = false;
             }
 
-            Console.SetCursorPosition(0, board.Height);
+            View.ApplyOffsetY(board.Height);
+            //Console.SetCursorPosition(0, board.Height);
+        }
+
+        private void CheckWinner()
+        {
+            if (Score.Human >= MaxScore)
+            {
+                finished = true;
+                winner = humanPaddle;
+            }
+            else if (Score.Computer >= MaxScore)
+            {
+                finished = true;
+                winner = computerPaddle;
+            }
         }
     }
 }

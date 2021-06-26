@@ -7,19 +7,9 @@ using System.Threading.Tasks;
 
 namespace ConsolePong.Core
 {
-    public class Score
+    public static class Score
     {
-        public Score(Paddle humanPaddle, Paddle computerPaddle)
-        {
-            
-        }
-    }
-
-    public class ScoreHelper
-    {
-        public ScoreHelper()
-        {
-
-        }
+        public static int Human = 0;
+        public static int Computer = 0;
     }
 }

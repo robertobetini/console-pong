@@ -5,17 +5,27 @@ namespace ConsolePong.Core.Views
 {
     public abstract class View : IView
     {
-        protected readonly int xOffset = 20;
-        protected readonly int yOffset = 0;
+        public static readonly int xOffset = 30;
+        public static readonly int yOffset = 5;
 
         virtual public void Display()
         {
             throw new NotImplementedException();
         }
 
-        public void ApplyOffset(int x, int y)
+        public static void ApplyOffset(int x, int y)
         {
             Console.SetCursorPosition(xOffset + x, yOffset + y);
+        }
+
+        public static void ApplyOffsetX(int x)
+        {
+            Console.SetCursorPosition(xOffset + x, 0);
+        }
+
+        public static void ApplyOffsetY(int y)
+        {
+            Console.SetCursorPosition(0, yOffset + y);
         }
     }
 }
