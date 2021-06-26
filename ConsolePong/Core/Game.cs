@@ -23,6 +23,7 @@ namespace ConsolePong.Core
             humanPaddle = humanPaddle_;
             computerPaddle = computerPaddle_;
             boardView = new BoardView(board_);
+            ballView = new BallView(ball, 'O');
             humanPaddleView = new PaddleView(humanPaddle, paddleChar);
             computerPaddleView = new PaddleView(computerPaddle, paddleChar);
         }
@@ -32,16 +33,32 @@ namespace ConsolePong.Core
             if (!_boardIsDisplayed)
             {
                 boardView.Display();
+                ballView.Display();
                 humanPaddleView.Display();
                 computerPaddleView.Display();
                 _boardIsDisplayed = true;
+            }
+
+            if (board.BallCanMove(ball, ball.velocity))
+            {
+                if (ball.CollidesWithPaddle(humanPaddle) || ball.CollidesWithPaddle(computerPaddle))
+                    ball.Reflect();
+
+                ball.Move();
             }
 
             if (ball.Moved)
             {
                 ballView.Hide();
                 ballView.Display();
-                ball.Moved = true;
+                ball.Moved = false;
+            }
+
+            if (true)
+            {
+                computerPaddleView.Hide();
+                computerPaddleView.Display();
+                computerPaddle.Moved = false;
             }
 
             if (humanPaddle.Moved)
@@ -49,13 +66,6 @@ namespace ConsolePong.Core
                 humanPaddleView.Hide();
                 humanPaddleView.Display();
                 humanPaddle.Moved = false;
-            }
-
-            if (computerPaddle.Moved)
-            {
-                computerPaddleView.Hide();
-                computerPaddleView.Display();
-                computerPaddle.Moved = false;
             }
 
             Console.SetCursorPosition(0, board.Height);

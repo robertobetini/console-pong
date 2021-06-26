@@ -11,12 +11,13 @@ namespace ConsolePong.Core.Model
 
         public void Move(int[] direction)
         {
-
             for (int i = 0; i < _position.Length; i++)
             {
                 _oldPosition[i] = _position[i];
                 _position[i] += direction[i];
             }
+
+            Moved = true;
         }
 
         virtual public void Move()
@@ -32,6 +33,13 @@ namespace ConsolePong.Core.Model
         public int[] GetOldPosition()
         {
             return _oldPosition;
+        }
+
+        public void SetPosition(int[] position)
+        {
+            _position = position;
+            for (int i = 0; i < _position.Length; i++)
+                _oldPosition[i] = _position[i];
         }
     }
 }

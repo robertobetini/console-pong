@@ -1,6 +1,7 @@
 ﻿using ConsolePong.Core;
 using ConsolePong.Core.Controller;
 using ConsolePong.Core.Model;
+using System;
 using System.Threading;
 
 namespace ConsolePong
@@ -38,12 +39,16 @@ namespace ConsolePong
             var computerPaddle = new Paddle(3, Player.Computer);
 
             // Set computer paddle initial position.
-            var computerInitialPosition = new int[2] { board.Width - 3, 0 };
-            computerPaddle.Move(computerInitialPosition);
+            var computerInitialPosition = new int[2] { board.Width - 2, 1 };
+            computerPaddle.SetPosition(computerInitialPosition);
 
             // Set Ball initial position and velocity
-            var ballVelocity = new int[2] { 0, 0 };
-            var ball = new Ball(ballVelocity);
+            var random = new Random();
+            int ballX = 1 + random.Next() % board.Width;
+            int ballY = 1 + random.Next() % board.Height;
+            var ballVelocity = new int[2] { -1, 0 };
+            var ball = new Ball(ballVelocity, ballX, ballY);
+            
             _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
 
             // Starting the game.

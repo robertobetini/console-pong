@@ -1,4 +1,5 @@
 ﻿using ConsolePong.Core.Exceptions;
+using ConsolePong.Core.Model.Interface;
 
 namespace ConsolePong.Core.Model
 {
@@ -33,21 +34,33 @@ namespace ConsolePong.Core.Model
             return false;
         }
 
-        public bool CanMove(Paddle paddle, int[] direction)
+        public bool PaddleCanMove(Paddle paddle, int[] direction)
         {
             var currentPosition = paddle.GetPosition();
             int[] topNextPosition = new int[2];
             int[] bottomNextPosition = new int[2];
 
             for (int i = 0; i < direction.Length; i++)
-            {
                 topNextPosition[i] = currentPosition[i] + direction[i];
-            }
 
             bottomNextPosition[0] = topNextPosition[0];
             bottomNextPosition[1] = topNextPosition[1] + paddle.Length - 1;
 
             if (!PositionIsWall(topNextPosition) && !PositionIsWall(bottomNextPosition))
+                return true;
+
+            return false;
+        }
+
+        public bool BallCanMove(Ball ball, int[] direction)
+        {
+            var currentPosition = ball.GetPosition();
+            int[] nextPosition = new int[2];
+
+            for (int i = 0; i < direction.Length; i++)
+                nextPosition[i] = currentPosition[i] + direction[i];
+
+            if (!PositionIsWall(nextPosition))
                 return true;
 
             return false;

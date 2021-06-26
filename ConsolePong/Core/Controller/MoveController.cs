@@ -15,7 +15,7 @@ namespace ConsolePong.Core.Controller
             char key = Console.ReadKey(true).KeyChar;
             var direction = GetDirectionByKey(key);
 
-            if (board.CanMove(humanPaddle, direction) && !humanPaddle.Moved)
+            if (board.PaddleCanMove(humanPaddle, direction) && !humanPaddle.Moved)
             {
                 humanPaddle.Move(direction);
                 humanPaddle.Moved = true;
