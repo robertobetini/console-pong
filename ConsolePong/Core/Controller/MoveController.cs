@@ -1,9 +1,5 @@
 ﻿using ConsolePong.Core.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsolePong.Core.Controller
 {
@@ -32,7 +28,7 @@ namespace ConsolePong.Core.Controller
             {
                 case Up:
                 case AlternativeUp:
-                    return new int[2] { 0, -1};
+                    return new int[2] { 0, -1 };
                 case Down:
                 case AlternativeDown:
                     return new int[2] { 0, 1 };

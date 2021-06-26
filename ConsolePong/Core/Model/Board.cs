@@ -1,9 +1,4 @@
 ﻿using ConsolePong.Core.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsolePong.Core.Model
 {
@@ -22,7 +17,7 @@ namespace ConsolePong.Core.Model
 
             Width = width + 2;
             Height = height + 2;
-            
+
             FillMatrix();
         }
 
