@@ -13,7 +13,7 @@ namespace ConsolePong.Core.Views
             _board = board;
         }
 
-        public void Display()
+        public override void Display()
         {
             //ApplyOffset(0, 0);
             for (int y = 0; y < _board.Height; y++)

@@ -15,7 +15,7 @@ namespace ConsolePong.Core.Views
             _paddleChar = paddleChar;
         }
 
-        public void Display()
+        public override void Display()
         {
             var position = _paddle.GetPosition();
             for (int i = 0; i < _paddle.Length; i++)

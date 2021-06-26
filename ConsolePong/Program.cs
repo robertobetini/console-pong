@@ -1,16 +1,22 @@
 ﻿using ConsolePong.Core;
 using ConsolePong.Core.Controller;
 using ConsolePong.Core.Model;
+using ConsolePong.Core.Views;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace ConsolePong
 {
     class Program
     {
-        private const int BoardWidth = 50;
-        private const int BoardHeight = 20;
+        private const int BoardWidth = 80;
+        private const int BoardHeight = 30;
         private const short TickTime = 150;
+        private const int PaddleLength = 7;
+
+        private static Thread movementThread;
+        private static Timer timer;
         private static readonly MoveController _moveController = new MoveController(new Random());
         private static Game _game;
 
@@ -19,6 +25,8 @@ namespace ConsolePong
             while (true)
             {
                 _moveController.MoveHumanPaddle(_game.humanPaddle, _game.board);
+                if (_game.finished)
+                    break;
             }
         }
 
@@ -28,29 +36,44 @@ namespace ConsolePong
             lock (_game.boardView)
             {
                 _moveController.MoveComputerPaddle(_game.computerPaddle, _game.ball, _game.board, _game.Difficulty);
-                _game.Update();
+                if (!_game.finished)
+                    _game.Update();
+                else
+                {
+                    timer.Dispose();
+                }
             }
+        }
+
+        public static void ConfigureInitialSettings()
+        {
+            var windowWidth = BoardWidth + (2 * View.xOffset) + 2;
+            var windowHeight = BoardHeight + (2 * View.yOffset) + 2;
+
+            if (OperatingSystem.IsWindows())
+                Console.SetWindowSize(windowWidth, windowHeight);  
         }
 
         static void Main(string[] args)
         {
+            ConfigureInitialSettings();
             // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction.
 
             // Initializing the game objects.
             var board = new Board(BoardWidth, BoardHeight);
-            var humanPaddle = new Paddle(5, Player.Human);
+            var humanPaddle = new Paddle(PaddleLength, Player.Human);
             var humanInitialPosition = new int[2] { 1, (int)BoardHeight / 2  };
             humanPaddle.SetPosition(humanInitialPosition);
 
             // Set computer paddle initial position.
-            var computerPaddle = new Paddle(5, Player.Computer);
+            var computerPaddle = new Paddle(PaddleLength, Player.Computer);
             var computerInitialPosition = new int[2] { board.Width - 2, (int)BoardHeight / 2 };
             computerPaddle.SetPosition(computerInitialPosition);
 
             // Set Ball initial position and velocity
             var random = new Random();
-            int ballX = 17; //2 + random.Next() % (board.Width - 2);
-            int ballY = 17; //2 + random.Next() % (board.Height - 2);
+            int ballX = board.Width / 2;
+            int ballY = 2 + random.Next() % (board.Height - 2);
             var ballVelocity = new int[2] { 1, 1 };
             var ball = new Ball(ballVelocity, ballX, ballY);
             
@@ -60,10 +83,10 @@ namespace ConsolePong
             _game.Difficulty = Difficulty.Medium;
 
             // Starting the game.
-            Timer timer = new Timer(Update);
-            var thread1 = new Thread(new ThreadStart(HandleMovement));
-            thread1.Start();
+            timer = new Timer(Update);
+            movementThread = new Thread(new ThreadStart(HandleMovement));
 
+            movementThread.Start();
             timer.Change(0, TickTime);
         }
     }
