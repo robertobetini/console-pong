@@ -1,4 +1,5 @@
-﻿using ConsolePong.Core.Model;
+﻿using ConsolePong.Core.Controller;
+using ConsolePong.Core.Model;
 using ConsolePong.Core.Views;
 using System;
 
@@ -6,6 +7,7 @@ namespace ConsolePong.Core
 {
     public class Game
     {
+        public Difficulty Difficulty { get; set; }
         public Board board;
         public Ball ball;
         public Paddle humanPaddle;
