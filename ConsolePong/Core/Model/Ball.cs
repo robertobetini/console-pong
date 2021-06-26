@@ -9,14 +9,11 @@ namespace ConsolePong.Core.Model
 {
     public class Ball : GameEntity
     {
-        public int[] GetPosition()
-        {
-            return _position;
-        }
+        int[] _velocity;
 
-        public void Move(int direction)
+        public Ball(int[] velocity)
         {
-
+            _velocity = velocity;
         }
     }
 }
