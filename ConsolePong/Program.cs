@@ -1,15 +1,14 @@
 ﻿using ConsolePong.Core;
 using ConsolePong.Core.Controller;
 using ConsolePong.Core.Model;
-using ConsolePong.Core.Views;
 using System.Threading;
 
 namespace ConsolePong
 {
     class Program
     {
-        private const int BoardHeight = 10;
-        private const int BoardWidth = 10;
+        private const int BoardWidth = 70;
+        private const int BoardHeight = 20;
         private const short TickTime = 100;
         private static readonly MoveController _moveController = new MoveController();
         private static Game _game;
@@ -24,6 +23,7 @@ namespace ConsolePong
 
         private static void Update(object state)
         {
+            // Lock is needed to draw the game correctly
             lock (_game.boardView)
             {
                 _game.Update();
@@ -33,7 +33,7 @@ namespace ConsolePong
         static void Main(string[] args)
         {
             // Initializing the game objects.
-            var board = new Board(100, 20);
+            var board = new Board(BoardWidth, BoardHeight);
             var humanPaddle = new Paddle(3, Player.Human);
             var computerPaddle = new Paddle(3, Player.Computer);
 
@@ -41,6 +41,7 @@ namespace ConsolePong
             var computerInitialPosition = new int[2] { board.Width - 3, 0 };
             computerPaddle.Move(computerInitialPosition);
 
+            // Set Ball initial position and velocity
             var ballVelocity = new int[2] { 0, 0 };
             var ball = new Ball(ballVelocity);
             _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');

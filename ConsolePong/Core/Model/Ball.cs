@@ -15,5 +15,10 @@ namespace ConsolePong.Core.Model
         {
             _velocity = velocity;
         }
+
+        public override void Move()
+        {
+            Move(_velocity);
+        }
     }
 }

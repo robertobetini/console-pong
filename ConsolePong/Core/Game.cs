@@ -15,6 +15,7 @@ namespace ConsolePong.Core
         public Paddle humanPaddle;
         public Paddle computerPaddle;
         public BoardView boardView;
+        public BallView ballView;
         public PaddleView humanPaddleView;
         public PaddleView computerPaddleView;
         private bool _boardIsDisplayed;
@@ -40,6 +41,13 @@ namespace ConsolePong.Core
                 _boardIsDisplayed = true;
             }
 
+            if (ball.Moved)
+            {
+                ballView.Hide();
+                ballView.Display();
+                ball.Moved = true;
+            }
+
             if (humanPaddle.Moved)
             {
                 humanPaddleView.Hide();
@@ -53,6 +61,8 @@ namespace ConsolePong.Core
                 computerPaddleView.Display();
                 computerPaddle.Moved = false;
             }
+
+            Console.SetCursorPosition(0, board.Height);
         }
     }
 }

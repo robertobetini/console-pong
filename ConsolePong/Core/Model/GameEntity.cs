@@ -11,6 +11,7 @@ namespace ConsolePong.Core.Model
     {
         protected int[] _position = new int[2] { 1, 1 };
         protected int[] _oldPosition = new int[2] { 1, 1 };
+        public bool Moved { get; set; }
 
         public void Move(int[] direction)
         {
@@ -20,6 +21,11 @@ namespace ConsolePong.Core.Model
                 _oldPosition[i] = _position[i];
                 _position[i] += direction[i];
             }
+        }
+
+        virtual public void Move()
+        {
+            throw new NotImplementedException();
         }
 
         public int[] GetPosition()
