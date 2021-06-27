@@ -10,6 +10,8 @@ namespace ConsolePong.Core
         public Difficulty Difficulty { get; set; }
 
         public const int MaxScore = 5;
+        public const char BallChar = 'O';
+        public const char ScoreChar = '#';
 
         public Board board;
         public Ball ball;
@@ -23,24 +25,24 @@ namespace ConsolePong.Core
         public Paddle winner;
 
         private bool _boardIsDisplayed;
+        private Random _random;
 
-        public Game(Board board_, Ball ball_, Paddle humanPaddle_, Paddle computerPaddle_, char paddleChar)
+        public Game(Board board_, Ball ball_, Paddle humanPaddle_, Paddle computerPaddle_, Random random, char paddleChar)
         {
             board = board_;
             ball = ball_;
             humanPaddle = humanPaddle_;
             computerPaddle = computerPaddle_;
             boardView = new BoardView(board_);
-            ballView = new BallView(ball, 'O');
+            ballView = new BallView(ball, BallChar);
             humanPaddleView = new PaddleView(humanPaddle, paddleChar);
             computerPaddleView = new PaddleView(computerPaddle, paddleChar);
+            _random = random;
         }
 
         public void Update()
         {
             CheckWinner();
-            
-            
 
             if (!_boardIsDisplayed)
             {
@@ -48,40 +50,39 @@ namespace ConsolePong.Core
                 ballView.Display();
                 humanPaddleView.Display();
                 computerPaddleView.Display();
-                ScoreView.Display(10, Score.Human, '#');
-                ScoreView.Display(board.Width - 14, Score.Computer, '#');
+                ScoreView.Display(10, Score.Human, ScoreChar);
+                ScoreView.Display(board.Width - 15, Score.Computer, ScoreChar);
                 _boardIsDisplayed = true;
             }
 
             if (ball.CollidesWithVerticalWall(board))
             {
-                // TODO: When ball collides with vertical wall, it should increase player/computer score, but now it's reflecting just for
-                // testing purposes.
                 ball.ReflectVertically();
+
                 if (ball.GetPosition()[0] <= 1)
                 {
                     Score.Computer++;
-                    ScoreView.Display(board.Width - 14, Score.Computer, '#');
+                    ScoreView.Display(board.Width - 15, Score.Computer, ScoreChar);
                 }
                 else
                 {
                     Score.Human++;
-                    ScoreView.Display(10, Score.Human, '#');
+                    ScoreView.Display(10, Score.Human, ScoreChar);
                 }
+
+                RespawnBall();
             }
-            if (ball.CollidesWithHorizontalWall(board))
+            else if (ball.CollidesWithHorizontalWall(board))
             {
                 ball.ReflectHorizontally();
             }
-            if (board.BallCanMove(ball, ball.velocity))
+            else if (board.BallCanMove(ball, ball.velocity))
             {
                 if (ball.CollidesWithPaddle(humanPaddle) || ball.CollidesWithPaddle(computerPaddle))
                     ball.ReflectVertically();
 
                 ball.Move();
             }
-            
-            
 
             if (ball.Moved)
             {
@@ -105,7 +106,6 @@ namespace ConsolePong.Core
             }
 
             View.ApplyOffsetY(board.Height);
-            //Console.SetCursorPosition(0, board.Height);
         }
 
         private void CheckWinner()
@@ -120,6 +120,33 @@ namespace ConsolePong.Core
                 finished = true;
                 winner = computerPaddle;
             }
+        }
+
+        private void RespawnBall()
+        {
+            int ballX = board.Width / 2;
+            int ballY = 1 + _random.Next() % (board.Height - 3);
+
+            var ballPosition = ball.GetPosition();
+
+            ball.SetPosition(new int[2] { ballX, ballY });
+            ball.SetOldPosition(ballPosition);
+            ball.Moved = true;
+
+            int velX;
+            int velY;
+
+            if (_random.NextDouble() < 0.5)
+                velX = 1;
+            else
+                velX = -1;
+
+            if (_random.NextDouble() < 0.5)
+                velY = 1;
+            else
+                velY = -1;
+
+            ball.velocity = new int[2] { velX, velY };
         }
     }
 }

@@ -41,6 +41,12 @@ namespace ConsolePong
                 else
                 {
                     timer.Dispose();
+                    int middleX = BoardWidth / 2;
+                    View.ApplyOffset(middleX, BoardHeight + 4);
+                    if (_game.winner.Player == Player.Human)
+                        Console.WriteLine("YOU WIN!!");
+                    else
+                        Console.WriteLine("YOU LOSE!!");
                 }
             }
         }
@@ -77,7 +83,7 @@ namespace ConsolePong
             var ballVelocity = new int[2] { -1, 1 };
             var ball = new Ball(ballVelocity, ballX, ballY);
             
-            _game = new Game(board, ball, humanPaddle, computerPaddle, 'X');
+            _game = new Game(board, ball, humanPaddle, computerPaddle, random, 'X');
 
             // TODO: Ask the user for the difficulty.
             _game.Difficulty = Difficulty.Random;

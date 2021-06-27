@@ -41,5 +41,10 @@ namespace ConsolePong.Core.Model
             for (int i = 0; i < _position.Length; i++)
                 _oldPosition[i] = _position[i];
         }
+
+        public void SetOldPosition(int[] position)
+        {
+            _oldPosition = position;
+        }
     }
 }
