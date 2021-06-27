@@ -47,6 +47,7 @@ namespace ConsolePong
                         Console.WriteLine("YOU WIN!!");
                     else
                         Console.WriteLine("YOU LOSE!!");
+                    Console.ReadLine();
                 }
             }
         }
@@ -63,8 +64,8 @@ namespace ConsolePong
         static void Main(string[] args)
         {
             ConfigureInitialSettings();
-            // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction.
 
+            // TODO: when ball velocity has a coordinate N greater than 1, apply move the move N times for that direction.
             // Initializing the game objects.
             var board = new Board(BoardWidth, BoardHeight);
             var humanPaddle = new Paddle(PaddleLength, Player.Human);
@@ -86,7 +87,33 @@ namespace ConsolePong
             _game = new Game(board, ball, humanPaddle, computerPaddle, random, 'X');
 
             // TODO: Ask the user for the difficulty.
-            _game.Difficulty = Difficulty.Random;
+            Console.Write("Pick a difficulty: \n    1. Easy\n    2. Medium\n    3. Hard\n    4. Impossible\n\nAnswer (number): ");
+            do
+            {
+                var chosenDifficulty = Console.ReadKey(true).KeyChar;
+                switch (chosenDifficulty)
+                {
+                    case '1':
+                        _game.Difficulty = Difficulty.Easy;
+                        Console.Write('1');
+                        break;
+                    case '2':
+                        _game.Difficulty = Difficulty.Medium;
+                        Console.Write('2');
+                        break;
+                    case '3':
+                        _game.Difficulty = Difficulty.Hard;
+                        Console.Write('3');
+                        break;
+                    case '4':
+                        _game.Difficulty = Difficulty.Impossible;
+                        Console.Write('4');
+                        break;
+                    default:
+                        _game.Difficulty = Difficulty.Random;
+                        break;
+                }
+            } while (_game.Difficulty == Difficulty.Random);
 
             // Starting the game.
             timer = new Timer(Update);
