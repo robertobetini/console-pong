@@ -43,8 +43,6 @@ namespace ConsolePong.Core
         public void Update()
         {
             CheckWinner();
-            
-            
 
             if (!_boardIsDisplayed)
             {
